@@ -24,7 +24,138 @@
             padding: 0 20px;
         }
 
-        /* ナビゲーション */
+        /* パスワード認証画面のスタイル */
+        .auth-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #000 0%, #1a1a1a 50%, #000 100%);
+        }
+
+        .auth-container {
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+            background-color: rgba(17, 17, 17, 0.9);
+            border-radius: 12px;
+            border: 1px solid #333;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .auth-icon {
+            width: 80px;
+            height: 80px;
+            background-color: #e50914;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin: 0 auto 30px;
+        }
+
+        .auth-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #e50914, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .auth-subtitle {
+            font-size: 18px;
+            color: #ccc;
+            margin-bottom: 40px;
+            line-height: 1.5;
+        }
+
+        .auth-form {
+            width: 100%;
+        }
+
+        .password-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .password-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #ccc;
+            margin-bottom: 8px;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 15px 20px;
+            background-color: #333;
+            border: 2px solid #555;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 18px;
+            text-align: center;
+            letter-spacing: 2px;
+            transition: border-color 0.3s;
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: #e50914;
+            box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.2);
+        }
+
+        .password-input::placeholder {
+            color: #999;
+            letter-spacing: normal;
+        }
+
+        .auth-error {
+            background-color: rgba(229, 9, 20, 0.1);
+            border: 1px solid #e50914;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 20px;
+            color: #ff6b6b;
+            font-size: 14px;
+            display: none;
+        }
+
+        .auth-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #e50914, #c5070e);
+            color: #fff;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .auth-btn:hover {
+            background: linear-gradient(45deg, #c5070e, #a00609);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
+        }
+
+        .auth-btn:active {
+            transform: translateY(0);
+        }
+
+        /* メインアプリケーション画面（初期は非表示） */
+        .main-app {
+            display: none;
+        }
+
+        /* 以下は既存のスタイルをそのまま維持 */
         .nav {
             padding: 20px 0;
             border-bottom: 1px solid #333;
@@ -70,6 +201,21 @@
 
         .reset-btn:hover {
             background-color: #555;
+        }
+
+        .logout-btn {
+            background-color: #555;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-left: 10px;
+        }
+
+        .logout-btn:hover {
+            background-color: #777;
         }
 
         /* メインコンテンツ */
@@ -295,6 +441,19 @@
 
         /* レスポンシブ */
         @media (max-width: 768px) {
+            .auth-container {
+                margin: 20px;
+                padding: 30px 20px;
+            }
+
+            .auth-title {
+                font-size: 24px;
+            }
+
+            .auth-subtitle {
+                font-size: 16px;
+            }
+
             .hero-title {
                 font-size: 32px;
             }
@@ -332,122 +491,181 @@
         .hidden {
             display: none;
         }
+
+        /* フェードインアニメーション */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
-    <!-- ナビゲーション -->
-    <nav class="nav">
-        <div class="container">
-            <div class="nav-content">
-                <div class="logo">
-                    <div class="logo-icon">📚</div>
-                    <span class="logo-text">EIGO TIMES</span>
+    <!-- パスワード認証画面 -->
+    <div class="auth-screen" id="authScreen">
+        <div class="auth-container">
+            <div class="auth-icon">🌟</div>
+            <h1 class="auth-title">自分で作る Eigo Times</h1>
+            <p class="auth-subtitle">📰 アクセスするためにはパスワードを入力してください</p>
+            
+            <form class="auth-form" id="authForm">
+                <div class="password-group">
+                    <label for="passwordInput" class="password-label">パスワード</label>
+                    <input 
+                        type="password" 
+                        id="passwordInput" 
+                        class="password-input" 
+                        placeholder="パスワードを入力"
+                        autocomplete="off"
+                    >
                 </div>
-                <button class="reset-btn hidden" id="resetBtn">
-                    ↻ 新しいニュース
+                
+                <div class="auth-error" id="authError">
+                    パスワードが正しくありません。もう一度お試しください。
+                </div>
+                
+                <button type="submit" class="auth-btn">
+                    🔓 アクセス
                 </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- メインアプリケーション画面 -->
+    <div class="main-app" id="mainApp">
+        <!-- ナビゲーション -->
+        <nav class="nav">
+            <div class="container">
+                <div class="nav-content">
+                    <div class="logo">
+                        <div class="logo-icon">📚</div>
+                        <span class="logo-text">EIGO TIMES</span>
+                    </div>
+                    <div>
+                        <button class="reset-btn hidden" id="resetBtn">
+                            ↻ 新しいニュース
+                        </button>
+                        <button class="logout-btn" id="logoutBtn">
+                            🚪 ログアウト
+                        </button>
+                    </div>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    <!-- メインコンテンツ -->
-    <main class="main">
-        <div class="container">
-            <!-- 入力画面 -->
-            <section class="input-section" id="inputSection">
-                <h1 class="hero-title">
-                    あなただけの<br>
-                    <span class="accent-text">英語ニュース</span>を<br>
-                    作成しよう
-                </h1>
-                <p class="hero-subtitle">
-                    TOEICレベルに合わせて、興味のあるトピックから<br>
-                    やさしい英語のニュースを自動生成
-                </p>
+        <!-- メインコンテンツ -->
+        <main class="main">
+            <div class="container">
+                <!-- 入力画面 -->
+                <section class="input-section" id="inputSection">
+                    <h1 class="hero-title">
+                        あなただけの<br>
+                        <span class="accent-text">英語ニュース</span>を<br>
+                        作成しよう
+                    </h1>
+                    <p class="hero-subtitle">
+                        TOEICレベルに合わせて、興味のあるトピックから<br>
+                        やさしい英語のニュースを自動生成
+                    </p>
 
-                <div class="form-container">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label">
-                                🎯 TOEICスコア
-                            </label>
-                            <input type="number" class="form-input" id="toeicScore" placeholder="500" min="0" max="990">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">
-                                🌍 ニューステーマ
-                            </label>
-                            <input type="text" class="form-input" id="topic" placeholder="Japan's space program">
-                        </div>
-                    </div>
-
-                    <div class="error-message hidden" id="errorMessage"></div>
-
-                    <button class="generate-btn" id="generateBtn">
-                        ▶ ニュースを生成
-                    </button>
-                </div>
-            </section>
-
-            <!-- 結果表示画面 -->
-            <section class="result-section" id="resultSection">
-                <div class="result-header">
-                    <div class="result-meta">
-                        <span class="meta-tag" id="categoryTag"></span>
-                        <span class="meta-info">🕒 <span id="readingTime"></span></span>
-                        <span class="meta-info">🎯 <span id="difficulty"></span></span>
-                    </div>
-                    <h1 class="result-title" id="resultTitle"></h1>
-                </div>
-
-                <div class="content-grid">
-                    <!-- メインコンテンツ -->
-                    <div class="main-content">
-                        <!-- 英語記事 -->
-                        <div class="content-card">
-                            <h2 class="card-title" style="color: #e50914;">English Article</h2>
-                            <div id="articleContent"></div>
-                        </div>
-
-                        <!-- 重要単語（順番を変更：英文の次に単語） -->
-                        <div class="content-card">
-                            <h2 class="card-title" style="color: #ffd700;">Key Vocabulary</h2>
-                            <div id="vocabularyContent"></div>
-                        </div>
-
-                        <!-- 日本語訳（最後に移動） -->
-                        <div class="content-card">
-                            <h2 class="card-title" style="color: #4a9eff;">日本語訳</h2>
-                            <div id="translationContent"></div>
-                        </div>
-                    </div>
-
-                    <!-- サイドバー -->
-                    <div class="sidebar">
-                        <!-- 学習統計 -->
-                        <div class="content-card">
-                            <h2 class="card-title" style="color: #4ade80;">学習統計</h2>
-                            <div class="stats-item">
-                                <span class="stats-label">単語数</span>
-                                <span class="stats-value" id="wordCount">-</span>
+                    <div class="form-container">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    🎯 TOEICスコア
+                                </label>
+                                <input type="number" class="form-input" id="toeicScore" placeholder="500" min="0" max="990">
                             </div>
-                            <div class="stats-item">
-                                <span class="stats-label">推定読解時間</span>
-                                <span class="stats-value" id="statsReadingTime">-</span>
-                            </div>
-                            <div class="stats-item">
-                                <span class="stats-label">難易度</span>
-                                <span class="stats-value" id="statsDifficulty">-</span>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    🌍 ニューステーマ
+                                </label>
+                                <input type="text" class="form-input" id="topic" placeholder="Japan's space program">
                             </div>
                         </div>
+
+                        <div class="error-message hidden" id="errorMessage"></div>
+
+                        <button class="generate-btn" id="generateBtn">
+                            ▶ ニュースを生成
+                        </button>
                     </div>
-                </div>
-            </section>
-        </div>
-    </main>
+                </section>
+
+                <!-- 結果表示画面 -->
+                <section class="result-section" id="resultSection">
+                    <div class="result-header">
+                        <div class="result-meta">
+                            <span class="meta-tag" id="categoryTag"></span>
+                            <span class="meta-info">🕒 <span id="readingTime"></span></span>
+                            <span class="meta-info">🎯 <span id="difficulty"></span></span>
+                        </div>
+                        <h1 class="result-title" id="resultTitle"></h1>
+                    </div>
+
+                    <div class="content-grid">
+                        <!-- メインコンテンツ -->
+                        <div class="main-content">
+                            <!-- 英語記事 -->
+                            <div class="content-card">
+                                <h2 class="card-title" style="color: #e50914;">English Article</h2>
+                                <div id="articleContent"></div>
+                            </div>
+
+                            <!-- 重要単語（順番を変更：英文の次に単語） -->
+                            <div class="content-card">
+                                <h2 class="card-title" style="color: #ffd700;">Key Vocabulary</h2>
+                                <div id="vocabularyContent"></div>
+                            </div>
+
+                            <!-- 日本語訳（最後に移動） -->
+                            <div class="content-card">
+                                <h2 class="card-title" style="color: #4a9eff;">日本語訳</h2>
+                                <div id="translationContent"></div>
+                            </div>
+                        </div>
+
+                        <!-- サイドバー -->
+                        <div class="sidebar">
+                            <!-- 学習統計 -->
+                            <div class="content-card">
+                                <h2 class="card-title" style="color: #4ade80;">学習統計</h2>
+                                <div class="stats-item">
+                                    <span class="stats-label">単語数</span>
+                                    <span class="stats-value" id="wordCount">-</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span class="stats-label">推定読解時間</span>
+                                    <span class="stats-value" id="statsReadingTime">-</span>
+                                </div>
+                                <div class="stats-item">
+                                    <span class="stats-label">難易度</span>
+                                    <span class="stats-value" id="statsDifficulty">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
 
     <script>
-        // DOM要素の取得
+        // パスワード認証の設定
+        const CORRECT_PASSWORD = '0705'; // 設定されたパスワード
+
+        // DOM要素の取得（認証関連）
+        const authScreen = document.getElementById('authScreen');
+        const mainApp = document.getElementById('mainApp');
+        const authForm = document.getElementById('authForm');
+        const passwordInput = document.getElementById('passwordInput');
+        const authError = document.getElementById('authError');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        // DOM要素の取得（メインアプリ）
         const inputSection = document.getElementById('inputSection');
         const resultSection = document.getElementById('resultSection');
         const generateBtn = document.getElementById('generateBtn');
@@ -467,6 +685,79 @@
         const statsReadingTime = document.getElementById('statsReadingTime');
         const statsDifficulty = document.getElementById('statsDifficulty');
         const wordCount = document.getElementById('wordCount');
+
+        // 認証状態の確認（ページロード時）
+        function checkAuthStatus() {
+            const isAuthenticated = sessionStorage.getItem('eigotimes_authenticated');
+            if (isAuthenticated === 'true') {
+                showMainApp();
+            } else {
+                showAuthScreen();
+            }
+        }
+
+        // 認証画面を表示
+        function showAuthScreen() {
+            authScreen.style.display = 'flex';
+            mainApp.style.display = 'none';
+            passwordInput.focus(); // パスワード入力欄にフォーカス
+        }
+
+        // メインアプリを表示
+        function showMainApp() {
+            authScreen.style.display = 'none';
+            mainApp.style.display = 'block';
+            mainApp.classList.add('fade-in');
+        }
+
+        // パスワード認証のエラー表示
+        function showAuthError() {
+            authError.style.display = 'block';
+            passwordInput.value = '';
+            passwordInput.focus();
+            
+            // パスワード入力欄を赤くハイライト
+            passwordInput.style.borderColor = '#e50914';
+            setTimeout(() => {
+                passwordInput.style.borderColor = '#555';
+            }, 2000);
+        }
+
+        // パスワード認証のエラー非表示
+        function hideAuthError() {
+            authError.style.display = 'none';
+        }
+
+        // 認証フォームの送信処理
+        authForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            hideAuthError();
+            
+            const enteredPassword = passwordInput.value.trim();
+            
+            if (enteredPassword === CORRECT_PASSWORD) {
+                // 認証成功
+                sessionStorage.setItem('eigotimes_authenticated', 'true');
+                showMainApp();
+            } else {
+                // 認証失敗
+                showAuthError();
+            }
+        });
+
+        // ログアウト処理
+        logoutBtn.addEventListener('click', () => {
+            sessionStorage.removeItem('eigotimes_authenticated');
+            showAuthScreen();
+            
+            // メインアプリの状態をリセット
+            resetApp();
+        });
+
+        // ページロード時に認証状態を確認
+        window.addEventListener('load', checkAuthStatus);
+
+        // 以下は既存のメインアプリケーション機能
 
         // エラーメッセージ表示
         function showError(message) {
