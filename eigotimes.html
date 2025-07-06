@@ -492,20 +492,9 @@
             display: none;
         }
 
-        .disclaimer {
-            background-color: rgba(255, 193, 7, 0.1);
-            border: 2px solid #ffc107;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 30px;
-            color: #ffc107;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .disclaimer-icon {
-            font-size: 20px;
-            margin-right: 10px;
+        /* フェードインアニメーション */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
         }
 
         @keyframes fadeIn {
@@ -588,13 +577,13 @@
                                 <label class="form-label">
                                     🎯 TOEICスコア
                                 </label>
-                                <input type="number" class="form-input" id="toeicScore" placeholder="目安で（例：500）" min="0" max="990">
+                                <input type="number" class="form-input" id="toeicScore" placeholder="500" min="0" max="990">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">
                                     🌍 ニューステーマ
                                 </label>
-                                <input type="text" class="form-input" id="topic" placeholder="例）フランス人の日常">
+                                <input type="text" class="form-input" id="topic" placeholder="Japan's space program">
                             </div>
                         </div>
 
@@ -696,8 +685,6 @@
         const statsReadingTime = document.getElementById('statsReadingTime');
         const statsDifficulty = document.getElementById('statsDifficulty');
         const wordCount = document.getElementById('wordCount');
-        const disclaimerContent = document.getElementById('disclaimerContent');
-        const disclaimerText = document.getElementById('disclaimerText');
 
         // 認証状態の確認（ページロード時）
         function checkAuthStatus() {
@@ -847,14 +834,6 @@
 
         // 結果を表示
         function displayResult(result) {
-            // 免責事項の表示
-            if (result.disclaimer) {
-                disclaimerText.textContent = result.disclaimer;
-                disclaimerContent.style.display = 'block';
-            } else {
-                disclaimerContent.style.display = 'none';
-            }
-
             // タイトルと記事の表示
             resultTitle.textContent = result.title;
             
